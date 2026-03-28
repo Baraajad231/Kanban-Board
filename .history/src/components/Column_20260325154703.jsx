@@ -1,0 +1,22 @@
+import Card from "./Card";
+
+const Column = ({ data }) => {
+  return (
+    <div className="bg-lines-light flex w-72 shrink-0 flex-col self-start rounded-lg px-2 shadow">
+      <h2 className="group/column bg-lines-light text-heading-s relative top-0 rounded px-2 py-4">
+        {data.title}
+        {data.tasks.length > 0 ? data.tasks.length : 0}
+      </h2>
+      <div className="mb-5 flex flex-col gap-5">
+        {data.tasks.map((task) => (
+          <Card key={task.id} data={task} />
+        ))}
+      </div>
+      <button className="border-light-grey bg-lines-light text-heading-m text-medium-grey -mx-2 mt-auto border-t px-2 py-4">
+        + Add New Task
+      </button>
+    </div>
+  );
+};
+
+export default Column;

@@ -1,0 +1,65 @@
+import { Dialog } from "radix-ui";
+
+const DialogPrimitive = ({
+  title,
+  triggerComponent,
+  children,
+  isOpen,
+  setOpen,
+}) => (
+  <Dialog.Root open={isOpen} onOpenChange={setOpen}>
+    <Dialog.Trigger asChild>{triggerComponent}</Dialog.Trigger>
+    <Dialog.Portal>
+      <Dialog.Overlay className="bg-blackA6 data-[state=open]:animate-overlayShow fixed inset-0" />
+      <Dialog.Content className="bg-gray1 data-[state=open]:animate-contentShow fixed top-1/2 left-1/2 max-h-[85vh] w-[90vw] max-w-125 -translate-x-1/2 -translate-y-1/2 rounded-md p-6.25 shadow-(--shadow-6) focus:outline-none">
+        <Dialog.Title className="text-mauve12 m-0 text-[17px] font-medium">
+          {title}
+        </Dialog.Title>
+        <Dialog.Description className="text-mauve11 mt-2.5 mb-5 text-[15px] leading-normal">
+          Make changes to your profile here. Click save when you're done.
+        </Dialog.Description>
+        <fieldset className="mb-3.75 flex items-center gap-5">
+          <label
+            className="text-violet11 w-22.5 text-right text-[15px]"
+            htmlFor="name"
+          >
+            Name
+          </label>
+          <input
+            className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-8.75 w-full flex-1 items-center justify-center rounded px-2.5 text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
+            id="name"
+            defaultValue="Pedro Duarte"
+          />
+        </fieldset>
+        <fieldset className="mb-3.75 flex items-center gap-5">
+          <label
+            className="text-violet11 w-22.5 text-right text-[15px]"
+            htmlFor="username"
+          >
+            Username
+          </label>
+          <input
+            className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-8.75 w-full flex-1 items-center justify-center rounded px-2.5 text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
+            id="username"
+            defaultValue="@peduarte"
+          />
+        </fieldset>
+        <div className="mt-6.25 flex justify-end">
+          <Dialog.Close asChild>
+            <button className="bg-green4 text-green11 hover:bg-green5 focus-visible:outline-green6 inline-flex h-8.75 items-center justify-center rounded px-3.75 leading-none font-medium outline-offset-1 outline-none select-none focus-visible:outline-2">
+              Save changes
+            </button>
+          </Dialog.Close>
+        </div>
+        <Dialog.Close asChild>
+          <button
+            className="text-violet11 bg-gray3 hover:bg-violet4 focus:shadow-violet7 absolute top-2.5 right-2.5 inline-flex size-6.25 appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
+            aria-label="Close"
+          ></button>
+        </Dialog.Close>
+      </Dialog.Content>
+    </Dialog.Portal>
+  </Dialog.Root>
+);
+
+export default DialogPrimitive;

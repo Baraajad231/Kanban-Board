@@ -1,0 +1,71 @@
+import { useContext } from "react";
+import Column from "./Column";
+import { DataContext } from "@/DataContext";
+import { produce } from "immer";
+import { DragDropProvider } from "@dnd-kit/react";
+import { arrayMove } from "@dnd-kit/sortable";
+
+/**
+ *
+ * @param {Object} props
+ * @param {Array} props.columns
+ * @param {Number} props.columns.id
+ * @param {Array} props.columns.tasks
+ * @param {string} props.columns.title
+ * @returns {JSX.Element}
+ */
+
+const WorkSpace = () => {
+  const { data, selectedBoardIndex, setData } = useContext(DataContext);
+  const columns = data[selectedBoardIndex]?.columns || [];
+
+  const newColumnObject = () => ({
+    id: crypto.randomUUID(),
+    title: "New Column",
+    tasks: [],
+  });
+  const addNewColumnHandler = () => {
+    const newColumn = newColumnObject();
+    setData((prev) => {
+      const newData = produce(prev, (draft) => {
+        draft[selectedBoardIndex].columns.push(newColumn);
+      });
+      // const newData = [...prev];
+      // newData[selectedBoardIndex] = {
+      //   ...newData[selectedBoardIndex],
+      //   columns: [...columns, newColumn],
+      // };
+      // newData[selectedBoardIndex].columns.push(newColumn);
+      return newData;
+    });
+  };
+
+  const onDragEndHandler = (e) => {
+    console.log(e);
+  };
+
+  return (
+    <DragDropProvider onDragEnd={onDragEndHandler}>
+      <div className="bg-light-grey flex h-[calc(100vh-97px)] flex-1 gap-6 overflow-auto p-6">
+        {columns.map((column) => (
+          <Column
+            key={column.id}
+            id={column.id}
+            title={column.title}
+            tasks={column.tasks}
+          />
+        ))}
+
+        <button
+          className="bg-lines-light text-heading-l text-medium-grey w-72 shrink-0 self-start rounded-md p-3"
+          type="button"
+          onClick={addNewColumnHandler}
+        >
+          + New Column
+        </button>
+      </div>
+    </DragDropProvider>
+  );
+};
+
+export default WorkSpace;

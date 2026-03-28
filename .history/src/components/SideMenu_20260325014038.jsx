@@ -1,0 +1,67 @@
+import clsx from "clsx";
+import { useState } from "react";
+import DialogPrimitive from "./DialogPrimitive";
+import boardIcon from "@assets/icon-board.svg";
+
+const DATA = [
+  {
+    title: "Home",
+    id: "1",
+  },
+  {
+    title: "About",
+    id: "2",
+  },
+  {
+    title: "Contact",
+    id: "3",
+  },
+];
+
+const SideMenu = () => {
+  const [selectedBoardIndex, setSelectedBoardIndex] = useState(0);
+  const [open, setOpen] = useState(false);
+  const onAddNewBoard = () => setOpen(true);
+  return (
+    <aside className="side-menu border-lines-light -mt-px h-screen w-75 border-r bg-white">
+      <p className="text-heading-s px-8 py-4">ALL BOARDS {DATA.length}</p>
+      <ul>
+        {DATA.map((item, index) => (
+          <li key={item.id}>
+            <button
+              className={clsx(
+                "text-heading-m text-medium-grey data-[isactive=false]:hover:bg-main-purple/10 data-[isactive=false]:hover:text-main-purple flex w-11/12 items-center gap-4 rounded-e-full px-8 py-4 transition",
+                {
+                  "bg-main-purple hover:bg-main-purple text-white!":
+                    index === selectedBoardIndex,
+                },
+              )}
+              onClick={() => setSelectedBoardIndex(index)}
+            >
+              <img src={boardIcon} alt="boardIcon" />+ Create New Board
+              {item.title}
+            </button>
+          </li>
+        ))}
+        <li>
+          <DialogPrimitive
+            isOpen={open}
+            setOpen={setOpen}
+            title="Create new board"
+            triggerComponent={() => (
+              <button
+                onClick={onAddNewBoard}
+                className="text-main-purple text-heading-m flex w-full items-center gap-4"
+              >
+                <img src={boardIcon} alt="boardIcon" />+ Create New Board
+              </button>
+            )}
+          >
+            Hello world
+          </DialogPrimitive>
+        </li>
+      </ul>
+    </aside>
+  );
+};
+export default SideMenu;

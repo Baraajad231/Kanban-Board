@@ -1,0 +1,69 @@
+import { useContext } from "react";
+import Card from "./Card";
+import { DataContext } from "@/DataContext";
+/**
+ * @param {Object} props
+ * @param {String} props.title
+ * @param {Array} props.tasks
+ * @returns
+ */
+const Column = ({ id, title, tasks = [] }) => {
+  const { setData, selectedBoardIndex, data } = useContext(DataContext);
+
+  const creatNewTask = () => ({ id: crypto.randomUUID(), title: "New Task" });
+
+  const creatNewColumnArray = (dataArray, boardIndex, newTask) => {
+    return dataArray[boardIndex].columns.map((column) => {
+      if (column.id === id) {
+        return {
+          ...column,
+          tasks: [...column.tasks, newTask],
+        };
+      }
+      return column;
+    });
+  };
+
+  const addNewTaskHandler = () => {
+    setData((prev) => {
+      const newTask = creatNewTask();
+
+      const newColumns = creatNewColumnArray(data, selectedBoardIndex, newTask);
+
+      // const newData = [...prev];
+      // newData[selectedBoardIndex] = {
+      //   ...newData[selectedBoardIndex],
+      //   columns: newColumns,
+      // };
+
+      return newData;
+    });
+  };
+
+  return (
+    <div className="bg-lines-light flex w-72 shrink-0 flex-col self-start rounded-lg px-2 shadow">
+      <h2 className="group/column bg-lines-light text-heading-s relative top-0 rounded px-2 py-4">
+        {title}({tasks.length > 0 ? tasks.length : 0})
+      </h2>
+      <div className="mb-5 flex flex-col gap-5">
+        {tasks.map((task) => (
+          <Card
+            key={task.id}
+            taskId={task.id}
+            title={task.title}
+            columnId={id}
+            description={task.description}
+          />
+        ))}
+      </div>
+      <button
+        className="border-light-grey bg-lines-light text-heading-m text-medium-grey -mx-2 mt-auto border-t px-2 py-4"
+        onClick={addNewTaskHandler}
+      >
+        + Add New Task
+      </button>
+    </div>
+  );
+};
+
+export default Column;
